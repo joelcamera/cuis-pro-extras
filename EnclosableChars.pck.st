@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7070] on 15 March 2025 at 5:38:31 pm'!
+'From Cuis7.3 [latest update: #7079] on 18 March 2025 at 7:25:37 pm'!
 'Description '!
-!provides: 'EnclosableChars' 1 6!
+!provides: 'EnclosableChars' 1 8!
 SystemOrganization addCategory: #EnclosableChars!
 
 
@@ -86,25 +86,32 @@ assertThatWithThisString: aStartingString selectedTextFromIndex: aStartIndex  se
 	
 	self assert: model actualContents equals: anExpectedText.! !
 
-!BracketsTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 17:31:08'!
-assertThatWithThisString: aStartingString whenKeyboardEventAppears: aKeyboardEvent textWillEquals: anExpectedText
-	
-	self
-		assertThatWithThisString: aStartingString 
-		cursorInIndex: 1
-		whenKeyboardEventAppears: aKeyboardEvent
-		textWillEquals: anExpectedText! !
-
 !BracketsTest methodsFor: 'exercising' stamp: 'JEC 3/15/2025 17:26:20'!
 keyboardEventWithAngleBracket
 
 	^ self keyboardEventWithCharacter: $<! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/15/2025 17:34:32'!
+!BracketsTest methodsFor: 'exercising' stamp: 'JEC 3/18/2025 18:40:16'!
+keyboardEventWithBracket
+
+	^ self keyboardEventWithCharacter: $(! !
+
+!BracketsTest methodsFor: 'exercising' stamp: 'JEC 3/18/2025 18:41:12'!
+keyboardEventWithCurlyBrackets
+	
+	^ self keyboardEventWithCharacter: ${! !
+
+!BracketsTest methodsFor: 'exercising' stamp: 'JEC 3/18/2025 18:40:28'!
+keyboardEventWithSquareBrackets
+	
+	^ self keyboardEventWithCharacter: $[! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 18:43:28'!
 test001_WithoutSelectedTestAddsJustOneAngleBracket
 
-	self 
+	self
 		assertThatWithThisString: '' 
+		cursorInIndex: 1
 		whenKeyboardEventAppears: self keyboardEventWithAngleBracket
 		textWillEquals: '<'! !
 
@@ -120,23 +127,227 @@ test002_WithSelectedTestEncloseItWithAngleBrackets
 	
 	self assert: editor selectedString equals: 'asdf'! !
 
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 16:15:14'!
-assertThatWithThisString: aStartingString cursorInIndex: aCursorIndex whenBacktickKeyboardEventAppearsTextWillEquals: anExpectedText 
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:21:36'!
+test003_AddsEnclosableBracketsInEmptyStrings
+
+	self
+		assertThatWithThisString: '' 
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: '()'.
 	
-	self 
-		assertThatWithThisString: aStartingString
-		cursorInIndex: aCursorIndex
-		whenKeyboardEventAppears: self keyboardEventWithBacktick 
-		textWillEquals: anExpectedText! !
+	self
+		assertThatWithThisString: '' 
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: '[]'.
+		
+	self
+		assertThatWithThisString: '' 
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: '{}'.! !
 
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 15:48:48'!
-assertThatWithThisString: aStartingString cursorInIndex: aCursorIndex whenDoubleQuoteKeyboardEventAppearsTextWillEquals: anExpectedText
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:22:00'!
+test004_ToTheRightOfACharacterAddsEnclosableBrackets
 
-	self 
-		assertThatWithThisString: aStartingString
-		cursorInIndex: aCursorIndex
-		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
-		textWillEquals: anExpectedText! !
+	self
+		assertThatWithThisString: 'a' 
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: 'a()'.
+	
+	self
+		assertThatWithThisString: 'a' 
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: 'a[]'.
+		
+	self
+		assertThatWithThisString: 'a' 
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: 'a{}'.! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:22:30'!
+test005_ToTheLeftOfACharacter_AddsOpenningBracket
+
+	self
+		assertThatWithThisString: 'a' 
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: '(a'.
+	
+	self
+		assertThatWithThisString: 'a' 
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: '[a'.
+		
+	self
+		assertThatWithThisString: 'a' 
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: '{a'.! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:22:51'!
+test006_WithSpaceToTheRight_AddsEnclosableBrackets
+
+	self
+		assertThatWithThisString: ' '
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: '() '.
+	
+	self
+		assertThatWithThisString: ' '
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: '[] '.
+		
+	self
+		assertThatWithThisString: ' '
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: '{} '.! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:23:09'!
+test007_WithSpaceToTheLeft_AddsEnclosableCharacters
+
+	self
+		assertThatWithThisString: ' '
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: ' ()'.
+	
+	self
+		assertThatWithThisString: ' '
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: ' []'.
+		
+	self
+		assertThatWithThisString: ' '
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: ' {}'.! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:23:52'!
+test008_WithTabToTheLeft_AddsEnclosableBrackets
+
+	self
+		assertThatWithThisString: '	'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: '	()'.
+	
+	self
+		assertThatWithThisString: '	'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: '	[]'.
+		
+	self
+		assertThatWithThisString: '	'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: '	{}'.! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:23:45'!
+test009_WithTabToTheRight_AddsEnclosableBrackets
+
+	self
+		assertThatWithThisString: '	'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: '()	'.
+	
+	self
+		assertThatWithThisString: '	'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: '[]	'.
+		
+	self
+		assertThatWithThisString: '	'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: '{}	'.! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:24:13'!
+test010_WithNewLineToTheLeft_AddsEnclosableBrackets
+
+	self
+		assertThatWithThisString: '
+'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: '
+()'.
+	
+	self
+		assertThatWithThisString: '
+'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: '
+[]'.
+		
+	self
+		assertThatWithThisString: '
+'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: '
+{}'.! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:24:27'!
+test011_WithNewLineToTheRight_AddsEnclosableBrackets
+
+	self
+		assertThatWithThisString: '()'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: '(())'.
+	
+	self
+		assertThatWithThisString: '[]'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: '[[]]'.
+		
+	self
+		assertThatWithThisString: '{}'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: '{{}}'.! !
+
+!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:24:54'!
+test012_WhenStringIsSelected_EncloseTheSelectionWithBrackets
+
+	self
+		assertThatWithThisString: 'asdf' 
+		selectedTextFromIndex: 1
+		selectedTextToIndex: 5
+		whenKeyboardEventAppears: self keyboardEventWithBracket 
+		textWillEquals: '(asdf)'.
+	self assert: editor selectedString equals: 'asdf'.
+	
+	self
+		assertThatWithThisString: 'asdf'
+		selectedTextFromIndex: 1
+		selectedTextToIndex: 5
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: '[asdf]'.
+	self assert: editor selectedString equals: 'asdf'.
+		
+	self
+		assertThatWithThisString: 'asdf'
+		selectedTextFromIndex: 1
+		selectedTextToIndex: 5
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: '{asdf}'.
+	self assert: editor selectedString equals: 'asdf'.! !
 
 !QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 17:28:34'!
 assertThatWithThisString: aStartingString cursorInIndex: aCursorIndex whenKeyboardEventAppears: aKeyboardEvent textWillEquals: anExpectedText
@@ -148,36 +359,6 @@ assertThatWithThisString: aStartingString cursorInIndex: aCursorIndex whenKeyboa
 	
 	self assert: model actualContents equals: anExpectedText.! !
 
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 15:48:29'!
-assertThatWithThisString: aStartingString cursorInIndex: aCursorIndex whenSingleQuoteKeyboardEventAppearsTextWillEquals: anExpectedText
-
-	self 
-		assertThatWithThisString: aStartingString
-		cursorInIndex: aCursorIndex
-		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
-		textWillEquals: anExpectedText
-! !
-
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 16:21:12'!
-assertThatWithThisString: aStartingString selectedTextFromIndex: aStartIndex selectedTextToIndex: aStopIndex whenBacktickKeyboardEventAppearsTextWillEquals: anExpectedText 
-
-	self 
-		assertThatWithThisString: aStartingString
-		selectedTextFromIndex:  aStartIndex
-		selectedTextToIndex: aStopIndex
-		whenKeyboardEventAppears: self keyboardEventWithBacktick
-		textWillEquals: anExpectedText ! !
-
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 15:59:47'!
-assertThatWithThisString:  aStartingString selectedTextFromIndex: aStartIndex selectedTextToIndex: aStopIndex whenDoubleQuoteKeyboardEventAppearsTextWillEquals: anExpectedText
-
-	self 
-		assertThatWithThisString: aStartingString
-		selectedTextFromIndex:  aStartIndex
-		selectedTextToIndex: aStopIndex
-		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes
-		textWillEquals: anExpectedText ! !
-
 !QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 17:28:42'!
 assertThatWithThisString: aStartingString selectedTextFromIndex: aStartIndex  selectedTextToIndex: aStopIndex whenKeyboardEventAppears: aKeyboardEvent textWillEquals: anExpectedText
 
@@ -187,52 +368,6 @@ assertThatWithThisString: aStartingString selectedTextFromIndex: aStartIndex  se
 	editor enclosableQuotationMarks: aKeyboardEvent.
 	
 	self assert: model actualContents equals: anExpectedText.! !
-
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 15:59:59'!
-assertThatWithThisString:  aStartingString selectedTextFromIndex: aStartIndex selectedTextToIndex: aStopIndex whenSingleQuoteKeyboardEventAppearsTextWillEquals: anExpectedText
-
-	self 
-		assertThatWithThisString: aStartingString
-		selectedTextFromIndex:  aStartIndex
-		selectedTextToIndex: aStopIndex
-		whenKeyboardEventAppears: self keyboardEventWithSingleQuote 
-		textWillEquals: anExpectedText ! !
-
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 16:12:37'!
-assertThatWithThisString: aStartingString whenBacktickKeyboardEventAppearsTextWillEquals: anExpectedText 
-
-	self
-		assertThatWithThisString: aStartingString 
-		cursorInIndex: 1
-		whenKeyboardEventAppears: self keyboardEventWithBacktick 
-		textWillEquals: anExpectedText! !
-
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 15:46:50'!
-assertThatWithThisString: aStartingString whenDoubleQuoteKeyboardEventAppearsTextWillEquals: anExpectedText
-	
-	self
-		assertThatWithThisString: aStartingString 
-		cursorInIndex: 1
-		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
-		textWillEquals: anExpectedText! !
-
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 17:28:51'!
-assertThatWithThisString: aStartingString whenKeyboardEventAppears: aKeyboardEvent textWillEquals: anExpectedText
-	
-	self
-		assertThatWithThisString: aStartingString 
-		cursorInIndex: 1
-		whenKeyboardEventAppears: aKeyboardEvent
-		textWillEquals: anExpectedText! !
-
-!QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 15:47:05'!
-assertThatWithThisString: aStartingString whenSingleQuoteKeyboardEventAppearsTextWillEquals: anExpectedText
-	
-	self
-		assertThatWithThisString: aStartingString 
-		cursorInIndex: 1
-		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
-		textWillEquals: anExpectedText! !
 
 !QuotationMarksTest methodsFor: 'exercising' stamp: 'JEC 3/15/2025 16:13:05'!
 keyboardEventWithBacktick
@@ -249,325 +384,289 @@ keyboardEventWithSingleQuote
 	
 	^ self keyboardEventWithCharacter: $'! !
 
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:13:22'!
-test023_EncloseWithBacktickWhenThereIsNoOtherCharacters
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:31:54'!
+test001_EncloseWhenThereIsNoOtherCharacters
 
 	self
 		assertThatWithThisString: '' 
-		whenBacktickKeyboardEventAppearsTextWillEquals: '``'
-! !
-
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:13:59'!
-test024_WithACharacterToTheLeft_AddsOneBacktick
-	
-	self 
-		assertThatWithThisString: 'a' 
-		cursorInIndex: 2 
-		whenBacktickKeyboardEventAppearsTextWillEquals: 'a`'! !
-
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:17:37'!
-test025_WithACharacterToTheRight_AddsOneBacktick
-
-	self 
-		assertThatWithThisString: 'a' 
 		cursorInIndex: 1
-		whenBacktickKeyboardEventAppearsTextWillEquals: '`a'! !
-
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:16:16'!
-test026_WithASpaceToTheRight_AddsTwoBackticks
-	
-	self 
-		assertThatWithThisString: ' ' 
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes
+		textWillEquals: '""'.
+		
+	self
+		assertThatWithThisString: '' 
 		cursorInIndex: 1
-		whenBacktickKeyboardEventAppearsTextWillEquals: '`` '! !
-
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:18:03'!
-test027_WithASpaceToTheLeft_AddsTwoBackticks
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: ''''''.
 	
+	self
+		assertThatWithThisString: '' 
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: '``'! !
+
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test002_WithACharacterToTheLeft_AddsOneQuotationMark
+
 	self 
-		assertThatWithThisString: ' ' 
+		assertThatWithThisString: 'a'
 		cursorInIndex: 2
-		whenBacktickKeyboardEventAppearsTextWillEquals: ' ``'! !
-
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:18:24'!
-test028_WithATabToTheLeft_AddsTwoBackticks
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: 'a"'.
 	
 	self 
-		assertThatWithThisString: '	' 
+		assertThatWithThisString: 'a'
 		cursorInIndex: 2
-		whenBacktickKeyboardEventAppearsTextWillEquals: '	``'! !
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: 'a'''
+.
+	
+	self 
+		assertThatWithThisString: 'a'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: 'a`'! !
 
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:18:44'!
-test029_WithATabToTheRight_AddsTwoBackticks
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test003_WithACharacterToTheRight_AddsOneQuotationMark
 
 	self 
-		assertThatWithThisString: '	' 
+		assertThatWithThisString: 'a'
 		cursorInIndex: 1
-		whenBacktickKeyboardEventAppearsTextWillEquals: '``	'! !
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: '"a'.
+	
+	self 
+		assertThatWithThisString: 'a'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: '''a'
+.
+	
+	self 
+		assertThatWithThisString: 'a'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: '`a'! !
 
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:19:03'!
-test030_WithANewLineToTheLeft_AddsTwoBacktick
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test004_WithASpaceToTheRight_AddsTwoQuotationMarks
+	
+	self 
+		assertThatWithThisString: ' '
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: '"" '.
+	
+	self 
+		assertThatWithThisString: ' '
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: ''''' '
+.
+		
+	self 
+		assertThatWithThisString: ' '
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: '`` '! !
+
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test005_WithASpaceToTheLeft_AddsTwoQuotationMarks
+	
+	self 
+		assertThatWithThisString: ' '
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: ' ""'.
+	
+	self 
+		assertThatWithThisString: ' '
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: ' '''''
+.
+		
+	self 
+		assertThatWithThisString: ' '
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: ' ``'.! !
+
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test006_WithATabToTheLeft_AddsTwoQuotationMarks
+
+	self 
+		assertThatWithThisString: '	'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: '	""'.
+		
+	self 
+		assertThatWithThisString: '	'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: '	'''''
+.
+		
+	self 
+		assertThatWithThisString: '	'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: '	``'! !
+
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test007_WithATabToTheRight_AddsTwoQuotationMarks
+
+	self 
+		assertThatWithThisString: '	'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: '""	'.
+	
+	self 
+		assertThatWithThisString: '	'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: '''''	'
+.
+	
+	self 
+		assertThatWithThisString: '	'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: '``	'! !
+
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test008_WithANewLineToTheLeft_AddsTwoQuotationMarks
 
 	self 
 		assertThatWithThisString: '
-' 
+'
 		cursorInIndex: 2
-		whenBacktickKeyboardEventAppearsTextWillEquals: '
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: '
+""'.
+
+	self 
+		assertThatWithThisString: '
+'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: '
+'''''
+.
+
+	self 
+		assertThatWithThisString: '
+'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: '
 ``'! !
 
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:19:25'!
-test031_WithANewLineToTheRight_AddsTwoBackticks
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test009_WithANewLineToTheRight_AddsTwoQuotationMarks
 
 	self 
 		assertThatWithThisString: '
 '
 		cursorInIndex: 1
-		whenBacktickKeyboardEventAppearsTextWillEquals: '``
-'! !
-
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:20:00'!
-test032_EnclosedWithBackticks_MovesTheCursorToTheRight
-	
-	self 
-		assertThatWithThisString: '``'
-		cursorInIndex: 2
-		whenBacktickKeyboardEventAppearsTextWillEquals: '``'.
-		
-	self assert: editor stopIndex equals: 3.! !
-
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 16:21:34'!
-test033_WhenThereisSelectedCode_EncloseTheSelectedCodeWithBackticks
-
-	self 
-		assertThatWithThisString: 'asdf'
-		selectedTextFromIndex: 1
-		selectedTextToIndex: 5
-		whenBacktickKeyboardEventAppearsTextWillEquals: '`asdf`'.
-	
-	self assert: editor selectedString equals: 'asdf'! !
-
-!QuotationMarksTest methodsFor: 'tests-backtick' stamp: 'JEC 3/15/2025 17:15:02'!
-test036_AddsOneBacktick_WhenThereAreCharactersToTheLeftOfEnclosingBacktick
-	
-	self 
-		assertThatWithThisString: 'a``'
-		cursorInIndex: 3 
-		whenBacktickKeyboardEventAppearsTextWillEquals: 'a```'.
-	
-	self assert: editor stopIndex equals: 4.! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:44:55'!
-test001_EncloseWithDoubleQuotesWhenThereIsNoOtherCharacters
-
-	self 
-		assertThatWithThisString: ''
-		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes
-		textWillEquals: '""'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:50:18'!
-test002_WithACharacterToTheLeft_AddsOneDoubleQuote
-
-	self 
-		assertThatWithThisString: 'a' 
-		cursorInIndex: 2 
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: 'a"'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:50:49'!
-test003_WithACharacterToTheRight_AddsOneDoubleQuote
-
-	self 
-		assertThatWithThisString: 'a' 
-		cursorInIndex: 1
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: '"a'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:51:08'!
-test004_WithASpaceToTheRight_AddsTwoDoubleQuote
-	
-	self 
-		assertThatWithThisString: ' ' 
-		cursorInIndex: 1
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: '"" '! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:51:27'!
-test005_WithASpaceToTheLeft_AddsTwoDoubleQuote
-	
-	self 
-		assertThatWithThisString: ' ' 
-		cursorInIndex: 2
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: ' ""'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:51:52'!
-test006_WithATabToTheLeft_AddsTwoDoubleQuote
-
-	self 
-		assertThatWithThisString: '	' 
-		cursorInIndex: 2
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: '	""'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:52:23'!
-test007_WithATabToTheRight_AddsTwoDoubleQuote
-
-	self 
-		assertThatWithThisString: '	' 
-		cursorInIndex: 1
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: '""	'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:53:02'!
-test008_WithANewLineToTheLeft_AddsTwoDoubleQuote
-
-	self 
-		assertThatWithThisString: '
-' 
-		cursorInIndex: 2
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: '
-""'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:53:34'!
-test009_WithANewLineToTheRight_AddsTwoDoubleQuote
-
-	self 
-		assertThatWithThisString: '
-' 
-		cursorInIndex: 1
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: '""
-'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 15:54:29'!
-test010_EnclosedWithDoubleQuotes_MovesTheCursorToTheRight
-	
-	self 
-		assertThatWithThisString:  '""'
-		cursorInIndex: 2
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: '""'.
-	
-	self assert: editor stopIndex equals: 3.! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 16:21:49'!
-test011_WhenThereisSelectedCode_EncloseTheSelectedCodeWithDoubleQuotes
-	
-	self 
-		assertThatWithThisString:  'asdf'
-		selectedTextFromIndex: 1
-		selectedTextToIndex: 5
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: '"asdf"'.
-	
-	self assert: editor selectedString equals: 'asdf'! !
-
-!QuotationMarksTest methodsFor: 'tests-double quotes' stamp: 'JEC 3/15/2025 16:57:10'!
-test034_AddsOneDoubleQuote_WhenThereAreCharactersToTheLeftOfEnclosingDoubleQuote
-	
-	self 
-		assertThatWithThisString: 'a""'
-		cursorInIndex: 3 
-		whenDoubleQuoteKeyboardEventAppearsTextWillEquals: 'a"""'.
-	
-	self assert: editor stopIndex equals: 4.! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:01:05'!
-test012_EncloseWithSingleQuoteWhenThereIsNoOtherCharacters
-
-	self
-		assertThatWithThisString: '' 
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: ''''''
-! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:01:41'!
-test013_WithACharacterToTheLeft_AddsOneSingleQuote
-	
-	self 
-		assertThatWithThisString: 'a' 
-		cursorInIndex: 2 
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: 'a'''! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:02:37'!
-test014_WithACharacterToTheRight_AddsOneSingleQuote
-
-	self 
-		assertThatWithThisString: 'a' 
-		cursorInIndex: 1
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: '''a'! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:03:28'!
-test015_WithASpaceToTheRight_AddsTwoSingleQuote
-	
-	self 
-		assertThatWithThisString: ' ' 
-		cursorInIndex: 1
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: ''''' '! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:04:00'!
-test016_WithASpaceToTheLeft_AddsTwoSingleQuote
-	
-	self 
-		assertThatWithThisString: ' ' 
-		cursorInIndex: 2
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: ' '''''! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:04:37'!
-test017_WithATabToTheLeft_AddsTwoSingleQuote
-	
-	self 
-		assertThatWithThisString: '	' 
-		cursorInIndex: 2
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: '	'''''! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:05:11'!
-test018_WithATabToTheRight_AddsTwoSingleQuote
-
-	self 
-		assertThatWithThisString: '	' 
-		cursorInIndex: 1
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: '''''	'! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:06:13'!
-test019_WithANewLineToTheLeft_AddsTwoSingleQuote
-
-	self 
-		assertThatWithThisString: '
-' 
-		cursorInIndex: 2
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: '
-'''''! !
-
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:06:54'!
-test020_WithANewLineToTheRight_AddsTwoSingleQuote
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: '""
+'.
 
 	self 
 		assertThatWithThisString: '
 '
 		cursorInIndex: 1
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: '''''
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: '''''
+'
+.
+
+	self 
+		assertThatWithThisString: '
+'
+		cursorInIndex: 1
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: '``
 '! !
 
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:07:45'!
-test021_EnclosedWithSingleQuotes_MovesTheCursorToTheRight
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:33:20'!
+test010_EnclosedWithSameQuotationMarks_MovesTheCursorToTheRight
+	
+	self 
+		assertThatWithThisString: '""'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: '""'.
+	self assert: editor stopIndex equals: 3.
 	
 	self 
 		assertThatWithThisString: ''''''
 		cursorInIndex: 2
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: ''''''.
-		
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: ''''''.
+	self assert: editor stopIndex equals: 3.
+	
+	self 
+		assertThatWithThisString: '``'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: '``'.
 	self assert: editor stopIndex equals: 3.! !
 
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 16:09:30'!
-test022_WhenThereisSelectedCode_EncloseTheSelectedCodeWithSingleQuotes
-
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:34:10'!
+test011_WhenThereisSelectedCode_EncloseTheSelectedCodeWithQuotationMarks
+	
 	self 
 		assertThatWithThisString: 'asdf'
-		selectedTextFromIndex: 1
+		selectedTextFromIndex:  1
 		selectedTextToIndex: 5
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: '''asdf'''.
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes
+		textWillEquals: '"asdf"' .
+	self assert: editor selectedString equals: 'asdf'.
 	
+	self 
+		assertThatWithThisString: 'asdf'
+		selectedTextFromIndex:  1
+		selectedTextToIndex: 5
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote 
+		textWillEquals: '''asdf''' .
+	self assert: editor selectedString equals: 'asdf'.
+	
+	self 
+		assertThatWithThisString: 'asdf'
+		selectedTextFromIndex:  1
+		selectedTextToIndex: 5
+		whenKeyboardEventAppears: self keyboardEventWithBacktick
+		textWillEquals: '`asdf`' .
 	self assert: editor selectedString equals: 'asdf'! !
 
-!QuotationMarksTest methodsFor: 'tests-single quotes' stamp: 'JEC 3/15/2025 17:14:30'!
-test035_AddsOneSingleQuote_WhenThereAreCharactersToTheLeftOfEnclosingSingleQuote
+!QuotationMarksTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:32:49'!
+test012_AddsOneQuotationMark_WhenThereAreCharactersToTheLeftOfEnclosingQuotationMark
+	
+	self 
+		assertThatWithThisString: 'a""'
+		cursorInIndex: 3
+		whenKeyboardEventAppears: self keyboardEventWithDoubleQuotes 
+		textWillEquals: 'a"""'.
+	self assert: editor stopIndex equals: 4.
 	
 	self 
 		assertThatWithThisString: 'a'''''
-		cursorInIndex: 3 
-		whenSingleQuoteKeyboardEventAppearsTextWillEquals: 'a'''''''.
+		cursorInIndex: 3
+		whenKeyboardEventAppears: self keyboardEventWithSingleQuote
+		textWillEquals: 'a'''''''
+.
+	self assert: editor stopIndex equals: 4.
 	
+	self 
+		assertThatWithThisString: 'a``'
+		cursorInIndex: 3
+		whenKeyboardEventAppears: self keyboardEventWithBacktick 
+		textWillEquals: 'a```'.
 	self assert: editor stopIndex equals: 4.! !
 
 !TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/15/2025 17:09:07'!
@@ -577,6 +676,14 @@ characterAt: anIndex equals: aCharacter
 	char := model actualContents at: anIndex ifAbsent: [ ^false ].
 
 	^ char = aCharacter! !
+
+!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 18:50:53'!
+characterAtIsNotClosableChar: anIndex
+
+	| char |
+	char := model actualContents at: anIndex ifAbsent: [ ^false ].
+
+	^ self isNotClosableChar: char.! !
 
 !TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/15/2025 17:12:18'!
 characterAtIsNotEmpty: anIndex
@@ -654,6 +761,13 @@ isNotEmptyChar: aCharacter
 
 	^ ({ Character space. Character newLineCharacter. Character tab } includes: aCharacter) not! !
 
+!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 19:00:24'!
+notExistsCharacterAt: anIndex
+
+	model actualContents at: anIndex ifAbsent: [ ^true ].
+	
+	^ false! !
+
 !TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/13/2025 20:06:14'!
 replaceSelectionAddingToTheLeft: aChar
 
@@ -673,7 +787,7 @@ shouldAddJustOneAngleBracket
 
 	^ self selection isEmpty! !
 
-!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/13/2025 20:16:46'!
+!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 19:15:41'!
 shouldAddJustOneEnclosableChar
 
 	"If there is no selected string and there is another character to the left or to the right that is not empty this answers true"
@@ -685,9 +799,9 @@ shouldAddJustOneEnclosableChar
 	contents := model actualContents.
 	
 	^ (self selection isEmpty 
-		and: [ index < (contents size) ]
-		and: [ self isNotEmptyChar: (contents at: index+1) ]
-		and: [ self isNotClosableChar: (contents at: index) ]) "Is always pointing the next"! !
+		and: [ (self notExistsCharacterAt: index - 1)  or: [ self characterAtIsNotEmpty: index - 1 ] ]
+		and: [ (self notExistsCharacterAt: index) or: [ self characterAtIsNotEmpty: index ] ]
+		and: [ self characterAtIsNotClosableChar: index ]) "Is always pointing the next"! !
 
 !TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/15/2025 17:18:13'!
 shouldAddJustOneQuotation
@@ -732,5 +846,3 @@ initializeKeyboardActions
 	keyboardActions at: 91 + 1 put: #enclosableBrackets:.  "square bracket ["
 	keyboardActions at: 96 + 1 put: #enclosableQuotationMarks:.  "backtick `"
 	keyboardActions at: 123 + 1 put: #enclosableBrackets:.  "curly bracket {"! !
-
-Editor initialize!
