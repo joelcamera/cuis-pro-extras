@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7079] on 18 March 2025 at 7:25:37 pm'!
+'From Cuis7.3 [latest update: #7079] on 18 March 2025 at 8:26:27 pm'!
 'Description '!
-!provides: 'EnclosableChars' 1 8!
+!provides: 'EnclosableChars' 1 9!
 SystemOrganization addCategory: #EnclosableChars!
 
 
@@ -22,6 +22,16 @@ EnclosableCharsTest subclass: #BracketsTest
 	category: 'EnclosableChars'!
 !classDefinition: 'BracketsTest class' category: #EnclosableChars!
 BracketsTest class
+	instanceVariableNames: ''!
+
+!classDefinition: #ClosingBracketTest category: #EnclosableChars!
+EnclosableCharsTest subclass: #ClosingBracketTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'EnclosableChars'!
+!classDefinition: 'ClosingBracketTest class' category: #EnclosableChars!
+ClosingBracketTest class
 	instanceVariableNames: ''!
 
 !classDefinition: #QuotationMarksTest category: #EnclosableChars!
@@ -106,7 +116,7 @@ keyboardEventWithSquareBrackets
 	
 	^ self keyboardEventWithCharacter: $[! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 18:43:28'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 18:43:28'!
 test001_WithoutSelectedTestAddsJustOneAngleBracket
 
 	self
@@ -115,7 +125,7 @@ test001_WithoutSelectedTestAddsJustOneAngleBracket
 		whenKeyboardEventAppears: self keyboardEventWithAngleBracket
 		textWillEquals: '<'! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/15/2025 17:34:22'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/15/2025 17:34:22'!
 test002_WithSelectedTestEncloseItWithAngleBrackets
 
 	self 
@@ -127,7 +137,7 @@ test002_WithSelectedTestEncloseItWithAngleBrackets
 	
 	self assert: editor selectedString equals: 'asdf'! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:21:36'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:21:36'!
 test003_AddsEnclosableBracketsInEmptyStrings
 
 	self
@@ -148,7 +158,7 @@ test003_AddsEnclosableBracketsInEmptyStrings
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{}'.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:22:00'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:22:00'!
 test004_ToTheRightOfACharacterAddsEnclosableBrackets
 
 	self
@@ -169,7 +179,7 @@ test004_ToTheRightOfACharacterAddsEnclosableBrackets
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: 'a{}'.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:22:30'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:22:30'!
 test005_ToTheLeftOfACharacter_AddsOpenningBracket
 
 	self
@@ -190,7 +200,7 @@ test005_ToTheLeftOfACharacter_AddsOpenningBracket
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{a'.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:22:51'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:22:51'!
 test006_WithSpaceToTheRight_AddsEnclosableBrackets
 
 	self
@@ -211,7 +221,7 @@ test006_WithSpaceToTheRight_AddsEnclosableBrackets
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{} '.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:23:09'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:23:09'!
 test007_WithSpaceToTheLeft_AddsEnclosableCharacters
 
 	self
@@ -232,7 +242,7 @@ test007_WithSpaceToTheLeft_AddsEnclosableCharacters
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: ' {}'.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:23:52'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:23:52'!
 test008_WithTabToTheLeft_AddsEnclosableBrackets
 
 	self
@@ -253,7 +263,7 @@ test008_WithTabToTheLeft_AddsEnclosableBrackets
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '	{}'.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:23:45'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:23:45'!
 test009_WithTabToTheRight_AddsEnclosableBrackets
 
 	self
@@ -274,7 +284,7 @@ test009_WithTabToTheRight_AddsEnclosableBrackets
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{}	'.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:24:13'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:24:13'!
 test010_WithNewLineToTheLeft_AddsEnclosableBrackets
 
 	self
@@ -301,7 +311,7 @@ test010_WithNewLineToTheLeft_AddsEnclosableBrackets
 		textWillEquals: '
 {}'.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:24:27'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:24:27'!
 test011_WithNewLineToTheRight_AddsEnclosableBrackets
 
 	self
@@ -322,7 +332,7 @@ test011_WithNewLineToTheRight_AddsEnclosableBrackets
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{{}}'.! !
 
-!BracketsTest methodsFor: 'tests-angle bracket' stamp: 'JEC 3/18/2025 19:24:54'!
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:24:54'!
 test012_WhenStringIsSelected_EncloseTheSelectionWithBrackets
 
 	self
@@ -348,6 +358,76 @@ test012_WhenStringIsSelected_EncloseTheSelectionWithBrackets
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{asdf}'.
 	self assert: editor selectedString equals: 'asdf'.! !
+
+!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 20:22:34'!
+test013
+
+	self
+		assertThatWithThisString: ' a'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithBracket
+		textWillEquals: ' (a'.
+	
+	self
+		assertThatWithThisString: ' a'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
+		textWillEquals: ' (a'.
+		
+	self
+		assertThatWithThisString: ' a'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
+		textWillEquals: ' {a'.! !
+
+!ClosingBracketTest methodsFor: 'assertions' stamp: 'JEC 3/18/2025 20:18:20'!
+assertThatWithThisString: aStartingString cursorInIndex: aCursorIndex whenKeyboardEventAppears: aKeyboardEvent textWillEquals: anExpectedText
+
+	self setUpWithString: aStartingString.
+	editor pointIndex: aCursorIndex.
+
+	editor closingBracket: aKeyboardEvent.
+	
+	self assert: model actualContents equals: anExpectedText.! !
+
+!ClosingBracketTest methodsFor: 'exercising' stamp: 'JEC 3/18/2025 20:20:21'!
+keyboardEventWithClosingBracket
+
+	^ self keyboardEventWithCharacter: $)! !
+
+!ClosingBracketTest methodsFor: 'exercising' stamp: 'JEC 3/18/2025 20:19:38'!
+keyboardEventWithClosingCurlyBracket
+
+	^ self keyboardEventWithCharacter: $}! !
+
+!ClosingBracketTest methodsFor: 'exercising' stamp: 'JEC 3/18/2025 20:19:50'!
+keyboardEventWithClosingSquareBracket
+
+	^ self keyboardEventWithCharacter: $]! !
+
+!ClosingBracketTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 20:21:36'!
+test001_WhenIsEnclosingWithoutCharsInTheMiddle_AddingAClosingBracketJustMoveTheCursor
+
+	self
+		assertThatWithThisString: '()'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithClosingBracket
+		textWillEquals: '()'.
+	self assert: editor stopIndex equals: 3.
+
+	self
+		assertThatWithThisString: '[]'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithClosingSquareBracket
+		textWillEquals: '[]'.
+	self assert: editor stopIndex equals: 3.
+		
+	self
+		assertThatWithThisString: '{}'
+		cursorInIndex: 2
+		whenKeyboardEventAppears: self keyboardEventWithClosingCurlyBracket
+		textWillEquals: '{}'.
+	self assert: editor stopIndex equals: 3.! !
 
 !QuotationMarksTest methodsFor: 'assertions' stamp: 'JEC 3/15/2025 17:28:34'!
 assertThatWithThisString: aStartingString cursorInIndex: aCursorIndex whenKeyboardEventAppears: aKeyboardEvent textWillEquals: anExpectedText
@@ -693,6 +773,27 @@ characterAtIsNotEmpty: anIndex
 
 	^ self isNotEmptyChar: char! !
 
+!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 20:09:02'!
+closingBracket: aKeyboardEvent 
+	"It's not the same as the one in: `encloseWith:`
+	This feature behaves more like in IntelliJ or VSCode"
+
+	| left right startIndex stopIndex which |
+	startIndex := self startIndex.
+	stopIndex := self stopIndex.
+	which := ')]>}' indexOf: aKeyboardEvent keyCharacter ifAbsent: [ ^true ].
+	left := '([<{' at: which.
+	right := ')]>}' at: which.
+
+	(self shouldAddClosingBracketWithLeft: left andRight: right)
+		ifTrue: [
+			self replaceSelectionWith: (Text string: (UnicodeString with: right) attributes: emphasisHere)
+		].
+	
+	self selectFrom: startIndex+1 to: stopIndex.
+
+	^ true.! !
+
 !TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/15/2025 17:18:48'!
 enclosableBrackets: aKeyboardEvent 
 	"It's not the same as the one in: `encloseWith:`
@@ -782,6 +883,15 @@ replaceSelectionAddingToTheRight: aChar
 		self selection,
 		(Text string: (UnicodeString with: aChar) attributes: emphasisHere)! !
 
+!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 20:16:02'!
+shouldAddClosingBracketWithLeft: leftChar andRight: rightChar
+
+
+	| index |
+	index := self startIndex.
+
+	^ ((self characterAt: index - 1 equals: leftChar) and: [ (self characterAt: index equals: rightChar) ]) not! !
+
 !TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/13/2025 20:24:36'!
 shouldAddJustOneAngleBracket
 
@@ -829,7 +939,7 @@ shouldNotMoveToStopIndex: aQuotationCharacter
 		and: [ ((self characterAtIsNotEmpty: index - 2 ) or: [ self characterAtIsNotEmpty: index + 1]) not ]
 	) not! !
 
-!TextEditor class methodsFor: '*EnclosableChars' stamp: 'JEC 3/15/2025 16:38:59'!
+!TextEditor class methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 20:01:31'!
 initializeKeyboardActions
 	
 	super initializeKeyboardActions.
@@ -842,7 +952,12 @@ initializeKeyboardActions
 	keyboardActions at: 34 + 1 put: #enclosableQuotationMarks:.  "double quotes"
 	keyboardActions at: 39 + 1 put: #enclosableQuotationMarks:.  "single quote ' "
 	keyboardActions at: 40 + 1 put: #enclosableBrackets:.  "parenthesis ("
+	keyboardActions at: 41 + 1 put: #closingBracket:.  "parenthesis )"
 	keyboardActions at: 60 + 1 put: #enclosableBrackets:.  "angle bracket <"
 	keyboardActions at: 91 + 1 put: #enclosableBrackets:.  "square bracket ["
+	keyboardActions at: 93 + 1 put: #closingBracket:.  "square bracket ]"
 	keyboardActions at: 96 + 1 put: #enclosableQuotationMarks:.  "backtick `"
-	keyboardActions at: 123 + 1 put: #enclosableBrackets:.  "curly bracket {"! !
+	keyboardActions at: 123 + 1 put: #enclosableBrackets:.  "curly bracket {"
+	keyboardActions at: 125 + 1 put: #closingBracket:.  "curly bracket }"! !
+
+Editor initialize!
