@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7079] on 18 March 2025 at 8:26:27 pm'!
+'From Cuis7.3 [latest update: #7079] on 19 March 2025 at 10:23:43 am'!
 'Description '!
-!provides: 'EnclosableChars' 1 9!
+!provides: 'EnclosableChars' 1 10!
 SystemOrganization addCategory: #EnclosableChars!
 
 
@@ -221,48 +221,6 @@ test006_WithSpaceToTheRight_AddsEnclosableBrackets
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{} '.! !
 
-!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:23:09'!
-test007_WithSpaceToTheLeft_AddsEnclosableCharacters
-
-	self
-		assertThatWithThisString: ' '
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithBracket
-		textWillEquals: ' ()'.
-	
-	self
-		assertThatWithThisString: ' '
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
-		textWillEquals: ' []'.
-		
-	self
-		assertThatWithThisString: ' '
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
-		textWillEquals: ' {}'.! !
-
-!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:23:52'!
-test008_WithTabToTheLeft_AddsEnclosableBrackets
-
-	self
-		assertThatWithThisString: '	'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithBracket
-		textWillEquals: '	()'.
-	
-	self
-		assertThatWithThisString: '	'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
-		textWillEquals: '	[]'.
-		
-	self
-		assertThatWithThisString: '	'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
-		textWillEquals: '	{}'.! !
-
 !BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:23:45'!
 test009_WithTabToTheRight_AddsEnclosableBrackets
 
@@ -283,33 +241,6 @@ test009_WithTabToTheRight_AddsEnclosableBrackets
 		cursorInIndex: 1
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{}	'.! !
-
-!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:24:13'!
-test010_WithNewLineToTheLeft_AddsEnclosableBrackets
-
-	self
-		assertThatWithThisString: '
-'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithBracket
-		textWillEquals: '
-()'.
-	
-	self
-		assertThatWithThisString: '
-'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
-		textWillEquals: '
-[]'.
-		
-	self
-		assertThatWithThisString: '
-'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
-		textWillEquals: '
-{}'.! !
 
 !BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 19:24:27'!
 test011_WithNewLineToTheRight_AddsEnclosableBrackets
@@ -358,27 +289,6 @@ test012_WhenStringIsSelected_EncloseTheSelectionWithBrackets
 		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
 		textWillEquals: '{asdf}'.
 	self assert: editor selectedString equals: 'asdf'.! !
-
-!BracketsTest methodsFor: 'tests' stamp: 'JEC 3/18/2025 20:22:34'!
-test013
-
-	self
-		assertThatWithThisString: ' a'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithBracket
-		textWillEquals: ' (a'.
-	
-	self
-		assertThatWithThisString: ' a'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithSquareBrackets
-		textWillEquals: ' (a'.
-		
-	self
-		assertThatWithThisString: ' a'
-		cursorInIndex: 2
-		whenKeyboardEventAppears: self keyboardEventWithCurlyBrackets
-		textWillEquals: ' {a'.! !
 
 !ClosingBracketTest methodsFor: 'assertions' stamp: 'JEC 3/18/2025 20:18:20'!
 assertThatWithThisString: aStartingString cursorInIndex: aCursorIndex whenKeyboardEventAppears: aKeyboardEvent textWillEquals: anExpectedText
@@ -897,7 +807,7 @@ shouldAddJustOneAngleBracket
 
 	^ self selection isEmpty! !
 
-!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 19:15:41'!
+!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/19/2025 09:53:57'!
 shouldAddJustOneEnclosableChar
 
 	"If there is no selected string and there is another character to the left or to the right that is not empty this answers true"
@@ -909,7 +819,6 @@ shouldAddJustOneEnclosableChar
 	contents := model actualContents.
 	
 	^ (self selection isEmpty 
-		and: [ (self notExistsCharacterAt: index - 1)  or: [ self characterAtIsNotEmpty: index - 1 ] ]
 		and: [ (self notExistsCharacterAt: index) or: [ self characterAtIsNotEmpty: index ] ]
 		and: [ self characterAtIsNotClosableChar: index ]) "Is always pointing the next"! !
 
