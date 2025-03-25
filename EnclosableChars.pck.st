@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7092] on 25 March 2025 at 2:17:11 pm'!
+'From Cuis7.3 [latest update: #7092] on 25 March 2025 at 5:46:12 pm'!
 'Description Refactor tests'!
-!provides: 'EnclosableChars' 1 12!
+!provides: 'EnclosableChars' 1 13!
 SystemOrganization addCategory: #EnclosableChars!
 
 
@@ -45,10 +45,10 @@ QuotationMarksTest class
 	instanceVariableNames: ''!
 
 
-!EnclosableCharsTest methodsFor: 'setUp/tearDown' stamp: 'JEC 3/25/2025 13:58:35'!
+!EnclosableCharsTest methodsFor: 'setUp/tearDown' stamp: 'JEC 3/25/2025 17:09:23'!
 setUpWithString: aString
 
-	"It might be unnecessary but everything in here is needed to setup properly the tests. If we delete something, all the tests will fail"
+	"It seems to be unnecessary but everything in here is needed to setup the tests properly. If we delete something, all the tests will fail"
 
 	| innerTextMorph textComposition |
 
@@ -687,7 +687,7 @@ characterAtIsNotEmpty: anIndex
 
 	^ self isNotEmptyChar: char! !
 
-!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 20:09:02'!
+!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/25/2025 17:34:34'!
 closingBracket: aKeyboardEvent 
 	"It's not the same as the one in: `encloseWith:`
 	This feature behaves more like in IntelliJ or VSCode"
@@ -700,36 +700,34 @@ closingBracket: aKeyboardEvent
 	right := ')]>}' at: which.
 
 	(self shouldAddClosingBracketWithLeft: left andRight: right)
-		ifTrue: [
-			self replaceSelectionWith: (Text string: (UnicodeString with: right) attributes: emphasisHere)
-		].
+		ifTrue: [ self replaceSelectionWith: (Text string: (UnicodeString with: right) attributes: emphasisHere) ].
 	
 	self selectFrom: startIndex+1 to: stopIndex.
 
 	^ true.! !
 
-!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/15/2025 17:18:48'!
+!TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/25/2025 17:33:24'!
 enclosableBrackets: aKeyboardEvent 
 	"It's not the same as the one in: `encloseWith:`
 	This feature behaves more like in IntelliJ or VSCode"
 
-	| left right startIndex stopIndex which |
+	| openingChar closingChar startIndex stopIndex which |
 	startIndex := self startIndex.
 	stopIndex := self stopIndex.
 	which := '([<{' indexOf: aKeyboardEvent keyCharacter ifAbsent: [ ^true ].
-	left := '([<{' at: which.
-	right := ')]>}' at: which.
+	openingChar := '([<{' at: which.
+	closingChar := ')]>}' at: which.
 
-	(left = $<)
+	(openingChar = $<)
 		ifTrue: [
 			self shouldAddJustOneAngleBracket
-				ifTrue: [ self replaceSelectionAddingToTheRight: left ]
-				ifFalse: [ self encloseSelectionWithLeftChar: left andRightChar: right ]
+				ifTrue: [ self replaceSelectionAddingToTheRight: openingChar ]
+				ifFalse: [ self encloseSelectionWithLeftChar: openingChar andRightChar: closingChar ]
 		]
 		ifFalse: [
 			self shouldAddJustOneEnclosableChar
-				ifTrue: [ self replaceSelectionAddingToTheLeft: left ]
-				ifFalse: [ self encloseSelectionWithLeftChar: left andRightChar: right ].
+				ifTrue: [ self replaceSelectionAddingToTheLeft: openingChar ]
+				ifFalse: [ self encloseSelectionWithLeftChar: openingChar andRightChar: closingChar ].
 		].
 	
 	self selectFrom: startIndex+1 to: stopIndex.
