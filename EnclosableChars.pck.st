@@ -1,12 +1,12 @@
-'From Cuis7.3 [latest update: #7079] on 19 March 2025 at 10:23:43 am'!
-'Description '!
-!provides: 'EnclosableChars' 1 10!
+'From Cuis7.3 [latest update: #7092] on 25 March 2025 at 2:17:11 pm'!
+'Description Refactor tests'!
+!provides: 'EnclosableChars' 1 12!
 SystemOrganization addCategory: #EnclosableChars!
 
 
 !classDefinition: #EnclosableCharsTest category: #EnclosableChars!
 TestCase subclass: #EnclosableCharsTest
-	instanceVariableNames: 'model editor iTextMorph txtComposition'
+	instanceVariableNames: 'model editor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'EnclosableChars'!
@@ -45,25 +45,29 @@ QuotationMarksTest class
 	instanceVariableNames: ''!
 
 
-!EnclosableCharsTest methodsFor: 'setUp/tearDown' stamp: 'JEC 3/15/2025 16:25:04'!
+!EnclosableCharsTest methodsFor: 'setUp/tearDown' stamp: 'JEC 3/25/2025 13:58:35'!
 setUpWithString: aString
+
+	"It might be unnecessary but everything in here is needed to setup properly the tests. If we delete something, all the tests will fail"
+
+	| innerTextMorph textComposition |
 
 	model := TextModel withText: aString copy.
 	editor := TextEditor new.
-	iTextMorph := InnerTextMorph new.
-	iTextMorph privateOwner: TextModelMorph new.
-	iTextMorph model: model.
-	editor morph: iTextMorph.
+	innerTextMorph := InnerTextMorph new.
+	innerTextMorph privateOwner: TextModelMorph new.
+	innerTextMorph model: model.
+	editor morph: innerTextMorph.
 	editor instVarNamed: 'emphasisHere' put: Array new.
 	editor model: model.
-	iTextMorph installEditorAndTextComposition.
-	txtComposition := TextComposition new.
-	txtComposition
+	innerTextMorph installEditorAndTextComposition.
+	textComposition := TextComposition new.
+	textComposition
 		setModel: model;
 		extentForComposing: 300@300.
-	editor textComposition: txtComposition.
-	txtComposition editor: editor.
-	txtComposition composeAll.! !
+	editor textComposition: textComposition.
+	textComposition editor: editor.
+	textComposition composeAll.! !
 
 !EnclosableCharsTest methodsFor: 'exercising' stamp: 'JEC 3/15/2025 16:26:04'!
 keyboardEventWithCharacter: aCharacter
