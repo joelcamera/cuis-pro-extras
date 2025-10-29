@@ -791,9 +791,7 @@ replaceSelectionAddingToTheLeft: aChar
 !TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/13/2025 20:06:40'!
 replaceSelectionAddingToTheRight: aChar
 
-	self replaceSelectionWith: 
-		self selection,
-		(Text string: (UnicodeString with: aChar) attributes: emphasisHere)! !
+	self replaceSelectionWith: (self selection appendToString: (UnicodeString with: aChar))! !
 
 !TextEditor methodsFor: '*EnclosableChars' stamp: 'JEC 3/18/2025 20:16:02'!
 shouldAddClosingBracketWithLeft: leftChar andRight: rightChar
